@@ -111,33 +111,40 @@ public class ChatServer implements ServerSocketThreadListener, SocketThreadListe
     @Override
     public synchronized void onReceiveString(SocketThread thread, Socket socket, String msg) throws SocketException {
         ClientThread client = (ClientThread) thread;
-        if (client.isAuthorized()) {
+        if (client.isAuthorized()) {            // Проверяем, авторизовался ли клиент
             handleAuthMessage(client, msg);
         } else {
-            socket.setSoTimeout(120000);
+            socket.setSoTimeout(120000);        // Если не авторизовался, ждём 2 мин и отключаем
             handleNonAuthMessage(client, msg);
         }
-        if (client.isAuthorized()) socket.setSoTimeout(0);
+        if (client.isAuthorized()) socket.setSoTimeout(0);      // Если вдруг клиент всё-таки авторизовался, подключаем его
     }
 
     private void handleNonAuthMessage(ClientThread newClient, String msg) {
-        String[] arr = msg.split(Library.DELIMITER);
-        if (arr.length != 3 || !arr[0].equals(Library.AUTH_REQUEST)) {
-            newClient.msgFormatError(msg);
-            return;
+        String[] arr = msg.split(Library.DELIMITER);                // Разбираем сообщение
+        if (arr.length != 3 || !arr[0].equals(Library.AUTH_REQUEST)) {      // Если сообщение не на авторизацию
+            if (!arr[0].equals(Library.CHANGE_NICKNAME)) {                  // И не на смену никнейма
+                newClient.msgFormatError(msg);                              // То выводим сообщение об ошибке и завершаем сессию
+                return;                                                     // И дальше продолжать не будем
+            }
         }
-        String login = arr[1];
-        String password = arr[2];
-        String nickname = SqlClient.getNickname(login, password);
-        if (nickname == null) {
+        String login = arr[1];                                     // Берём логин
+        String password = arr[2];                                  // Берём пароль
+        String nickname = SqlClient.getNickname(login, password);  // Запрос у БД никнейм, если пользователь найден в базе, получаем ник
+        if (nickname == null) {                                    // Если пользователь не найден, выходим
             return;
         } else {
-            ClientThread oldClient = findClientByNickname(nickname);
-            newClient.authAccept(nickname);
+            ClientThread oldClient = findClientByNickname(nickname);        // Проверяем что он не подключен
+            if (arr[0].equals(Library.CHANGE_NICKNAME)) {
+                String newNick = arr[3];
+                SqlClient.changeNickname(login, password, newNick);
+                nickname = newNick;
+            }
+            newClient.authAccept(nickname);                         // Если пользователь найден, авторизируем его
             if (oldClient == null) {
                 sendToAllAuthorizedClients(Library.getTypeBroadcast("Server", nickname + " connected"));
-            } else {
-                oldClient.reconnect();
+            } else {                                                // Если пользователь уже подключен на другом устройстве
+                oldClient.reconnect();                              // Переподключим его
                 clients.remove(oldClient);
             }
         }

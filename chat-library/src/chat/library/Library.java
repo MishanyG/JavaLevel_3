@@ -10,13 +10,18 @@ public class Library {
     public static final String TYPE_BROADCAST = "/bcast"; // то есть сообщение, которое будет посылаться всем
     public static final String USER_LIST = "/user_list";
     public static final String CLIENT_MSG_BROADCAST = "/clinet_bcast";
+    public static final String CHANGE_NICKNAME = "/change_nickname";
 
     public static String getTypeBcastClient(String msg) {
         return CLIENT_MSG_BROADCAST + DELIMITER + msg;
     }
 
-    public static String getAuthRequest(String login, String password) {
+    public static String getAuthRequest(String login, String password) {        // Сообщение для авторизации
         return AUTH_REQUEST + DELIMITER + login + DELIMITER + password;
+    }
+
+    public static String getChangeNickname(String login, String password, String newNick) {     // Сообщение для смены никнейма
+        return CHANGE_NICKNAME + DELIMITER + login + DELIMITER + password + DELIMITER + newNick;
     }
 
     public static String getAuthAccept(String nickname) {
