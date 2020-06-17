@@ -21,13 +21,18 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private static final int HEIGHT = 300;
 
     private final JTextArea log = new JTextArea();
-    private final JPanel panelTop = new JPanel(new GridLayout(2, 3));
+    private final JPanel panelTop = new JPanel(new GridLayout(3, 3));
     private final JTextField tfIPAddress = new JTextField("127.0.0.1");
     private final JTextField tfPort = new JTextField("8189");
     private final JCheckBox cbAlwaysOnTop = new JCheckBox("Always on top");
     private final JTextField tfLogin = new JTextField("Ivanov");
     private final JPasswordField tfPassword = new JPasswordField("1234");
     private final JButton btnLogin = new JButton("Login");
+    private final JButton btnChange = new JButton("Change nickname");
+    private JDialog dialog;
+    private JTextField tfNick;
+    private JButton btnChangeNick;
+    private boolean newNick = false;
 
     private final JPanel panelBottom = new JPanel(new BorderLayout());
     private final JButton btnDisconnect = new JButton("<html><b>Disconnect</b></html>");
@@ -42,7 +47,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
     private static final String WINDOW_TITLE = "Chat";
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new ClientGUI());
+        SwingUtilities.invokeLater(ClientGUI::new);
     }
 
     private ClientGUI() {
@@ -59,6 +64,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         btnSend.addActionListener(this);
         tfMessage.addActionListener(this);
         btnLogin.addActionListener(this);
+        btnChange.addActionListener(this);
         btnDisconnect.addActionListener(this);
 
         panelTop.add(tfIPAddress);
@@ -67,6 +73,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelTop.add(tfLogin);
         panelTop.add(tfPassword);
         panelTop.add(btnLogin);
+        panelTop.add(btnChange);
 
         panelBottom.add(btnDisconnect, BorderLayout.WEST);
         panelBottom.add(tfMessage, BorderLayout.CENTER);
@@ -93,9 +100,31 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             connect();
         } else if (src == btnDisconnect) {
             socketThread.close();
+        } else if (src == btnChange) {
+            changeWindow();
         } else {
             throw new RuntimeException("Unknown source: " + src);
         }
+    }
+
+    private void changeWindow() {
+        dialog = new JDialog(this);
+        tfNick = new JTextField("");
+        btnChangeNick = new JButton("Save");
+        dialog.setTitle("Change nickname");
+        dialog.setLocationRelativeTo(null);
+        btnChangeNick.addActionListener(e -> connect());
+        dialog.add(new JPanel() {
+            {
+                add(tfNick);
+                tfNick.setPreferredSize(new Dimension(150, 24));
+                add(btnChangeNick);
+            }
+        });
+        dialog.setVisible(true);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        dialog.setSize(250, 80);
+        newNick = true;
     }
 
     private void connect() {
@@ -174,7 +203,14 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         panelTop.setVisible(false);
         String login = tfLogin.getText();
         String password = new String(tfPassword.getPassword());
-        thread.sendMessage(Library.getAuthRequest(login, password));
+        if (newNick && !"".equals(tfNick.getText())) {          // Проверяем, не хочет ли клиент поменять никнейм и не пустое ли поле
+            thread.sendMessage(Library.getChangeNickname(login, password, tfNick.getText()));   // Формируем сообщение для смены никнейма
+            dialog.setVisible(false);
+            newNick = false;
+        } else {
+            thread.sendMessage(Library.getAuthRequest(login, password));    // Если клиент подключается, формируем сообщение для авторизации
+            newNick = false;
+        }
     }
 
     @Override

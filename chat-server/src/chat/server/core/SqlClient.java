@@ -25,7 +25,7 @@ public class SqlClient {
         }
     }
 
-    synchronized static String getNickname(String login, String password) {
+    synchronized static String getNickname(String login, String password) {     // Получаем из БД пользователя по логину и паролю
         try {
             ResultSet rs = statement.executeQuery(
                     String.format("select nickname from users_bd where login = '%s' and password = '%s'",
@@ -37,5 +37,13 @@ public class SqlClient {
             throw new RuntimeException(e);
         }
         return null;
+    }
+
+    synchronized static void changeNickname(String login, String password, String newNick) {    // Меняем никнейм
+        try {
+            statement.executeUpdate(String.format("UPDATE users_bd SET nickname = '%s' where login = '%s' and password = '%s';", newNick, login, password));
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
