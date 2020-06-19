@@ -8,9 +8,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -144,9 +144,13 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         socketThread.sendMessage(Library.getTypeBcastClient(msg));
     }
 
-    private void wrtMsgToLogFile(String msg, String username) {
-        try (FileWriter out = new FileWriter("log.txt", true)) {
-            out.write(username + ": " + msg + "\n");
+    private void wrtMsgToLogFile(String msg) {
+        try (FileWriter out = new FileWriter("log.txt", true)) {    // Откроем файл для записи
+            if (msg.contains(": : Server:") || msg.equals("Start") || msg.equals("Ready")) {    // Пропустим данные строки, чтобы сохранять переписку
+                out.flush();
+                return;
+            }
+            out.write(msg);     // Записываем данные в лог-файл
             out.flush();
         } catch (IOException e) {
             if (!shownIoErrors) {
@@ -155,12 +159,49 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
             }
         }
     }
+    private void readingFromLog() {
+        String file = "log.txt";
+        StringBuilder text = new StringBuilder();
+        LineNumberReader linNum;
+        try (RandomAccessFile randomAcc = new RandomAccessFile(file, "r")) {    // Откроем файл для установки каретки в необходимую позицию
+            linNum = new LineNumberReader(new FileReader(file));    // Откроем файл для перемешения по строкам
+            String str = "";
+            int linesCount = 0;                     // Здесь хранится количество строк
+            int number = 0;                         // Здесь хранится позиция каретки
+            while(null != linNum.readLine()) {      // Считаем количество строк в файле
+                linesCount++;
+            }
+            if (!(linesCount < 100)) {              // Проверяем лог на наличие 100 строк, если в файле присутствует
+                linesCount -= 100;                  // данное количество строк, отступим их
+                for (int i = 0; i < linesCount; i++) {
+                    number += randomAcc.readLine().length() + 1;    // Высчитаем необходимую позицию каретки
+                }
+                randomAcc.seek(number - 1);     // устанавливаем каретку в сотую снизу строку
+                for (int i = 0; i <= 100; i++) {
+                    text.append(randomAcc.readLine()).append("\n"); // записываем 100 строк
+                }
+                randomAcc.close();
+            } else {                                // Если в лог-файле меньше 100 строк
+                for (int i = 0; i < linesCount; i++) {
+                    text.append(randomAcc.readLine()).append("\n");     // записываем сколько есть
+                }
+            }
+            str = new String(text.toString().getBytes(StandardCharsets.ISO_8859_1), StandardCharsets.UTF_8);    // меняем кодировку, для отображения Русских символов
+            if (!str.equals(""))    // Проверяем на пустоту
+                log.append(str);    // Выводим в чат
+        } catch (FileNotFoundException f) {
+            f.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void putLog(String msg) {
         if ("".equals(msg)) return;
         SwingUtilities.invokeLater(() -> {
             log.append(msg + "\n");
             log.setCaretPosition(log.getDocument().getLength());
+            wrtMsgToLogFile(msg);       // Всё что пишется в чат, отправляем на запись в лог-файл
         });
     }
 
@@ -210,6 +251,7 @@ public class ClientGUI extends JFrame implements ActionListener, Thread.Uncaught
         } else {
             thread.sendMessage(Library.getAuthRequest(login, password));    // Если клиент подключается, формируем сообщение для авторизации
             newNick = false;
+            readingFromLog();   // После авторизации клиента, выводим 100 строк его переписки
         }
     }
 
