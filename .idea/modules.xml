@@ -2,7 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Chat_L3/Chat_L3.iml" filepath="$PROJECT_DIR$/Chat_L3/Chat_L3.iml" />
       <module fileurl="file://$PROJECT_DIR$/JavaLevel_3.iml" filepath="$PROJECT_DIR$/JavaLevel_3.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Server_L3/Server_L3.iml" filepath="$PROJECT_DIR$/Server_L3/Server_L3.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat-client/chat-client.iml" filepath="$PROJECT_DIR$/chat-client/chat-client.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat-library/chat-library.iml" filepath="$PROJECT_DIR$/chat-library/chat-library.iml" />
       <module fileurl="file://$PROJECT_DIR$/chat-server/chat-server.iml" filepath="$PROJECT_DIR$/chat-server/chat-server.iml" />

@@ -1,0 +1,64 @@
+.text-field:error {
+    -fx-border-color: red;
+    -fx-focus-color: red;
+}
+.password-field:error {
+    -fx-border-color: red;
+    -fx-focus-color: red;
+}
+.text-field {
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left center;
+    -fx-background-size: 20px 20px;
+    -fx-font-size: 12
+    -fx-padding: 5px 8px 5px 8px;
+    -fx-background-position: left 10 center;
+
+    -fx-background-insets: 0;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #f2f2f2;
+    -fx-border-style: solid;
+    -fx-border-width: 2px 2px 2px 2px;
+    -fx-border-radius: 0.5em;
+}
+.text-field:focused .content {
+    -fx-background-color: #ffffff;
+}
+.text-field:focused {
+    -fx-highlight-fill: #7ecfff;
+    -fx-background-image: none;
+}
+.text-field .content {
+    -fx-padding: 10px;
+    -fx-text-fill: gray;
+    -fx-highlight-fill: #7ecfff;
+    -fx-background-color: #ffffff;
+}
+
+#authorizationPane {
+    -fx-background-color: #ffffff;
+    -fx-font: normal 14px 'Calibri';
+}
+#loginButton {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 32px;
+    -fx-background-color: #fcdb14;
+    -fx-font: bold 16px 'Calibri';
+}
+#loginButton: pressed {
+    -fx-background-color: #f2f2f2;
+}
+#singupButton {
+    -fx-pref-width: 150px;
+    -fx-pref-height: 24px;
+    -fx-background-color: transparent;
+}
+#singupButton: pressed {
+    -fx-text-fill: #f2f2f2;
+}
+#login {
+     -fx-font: bold 16px 'Calibri';
+}
+#password {
+     -fx-font: bold 16px 'Calibri';
+}

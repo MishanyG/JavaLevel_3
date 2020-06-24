@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<GridPane fx:id="authorizationPane" prefHeight="300.0" prefWidth="400.0" stylesheets="@../styles/styleAuth.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerAuthorization">
+    <columnConstraints>
+        <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="64.0" minWidth="10.0" prefWidth="64.0" />
+        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="272.0" />
+        <ColumnConstraints halignment="LEFT" hgrow="SOMETIMES" maxWidth="64.0" minWidth="10.0" prefWidth="64.0" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints maxHeight="48.0" prefHeight="48.0" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints maxHeight="8.0" minHeight="10.0" prefHeight="8.0" />
+        <RowConstraints maxHeight="30.0" minHeight="12.0" prefHeight="30.0" />
+        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" />
+        <RowConstraints maxHeight="8.0" minHeight="10.0" prefHeight="8.0" />
+        <RowConstraints maxHeight="64.0" minHeight="10.0" prefHeight="64.0" />
+        <RowConstraints maxHeight="32.0" minHeight="10.0" prefHeight="32.0" />
+        <RowConstraints maxHeight="48.0" prefHeight="48.0" />
+    </rowConstraints>
+   <children>
+      <Button fx:id="singupButton" mnemonicParsing="false" onAction="#singUp" text="SING UP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="8" GridPane.valignment="CENTER" />
+      <Button fx:id="loginButton" mnemonicParsing="false" onAction="#logIn" text="LOG IN" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="7" GridPane.valignment="CENTER" />
+      <Label fx:id="login" text="LOGIN" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+         <GridPane.margin>
+            <Insets />
+         </GridPane.margin>
+      </Label>
+      <Label fx:id="password" text="PASSWORD" GridPane.columnIndex="1" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
+      <TextField fx:id="loginField" GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+      <PasswordField fx:id="passField" GridPane.columnIndex="1" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
+   </children>
+</GridPane>
