@@ -7,10 +7,8 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
-public class ClientHandler {
+public class ClientHandler implements Runnable {
     private final MyServer server;
     private final Socket socket;
     private final DataInputStream inputStream;
@@ -29,19 +27,24 @@ public class ClientHandler {
             this.outputStream = new DataOutputStream(socket.getOutputStream());
             this.name = "";
 
-            new Thread(() -> {
-                try {
-                    if (authentication()) {
-                        readMessages();
-                    }
-                } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e) {
-                    System.out.println("Client error...");
-                } finally {
-                    closeConnection();
-                }
-            }).start();
+            Server.executorServiceClient.execute(new Thread(this));
         } catch (IOException e) {
             throw new RuntimeException("Проблемы при создании обработчика клиента.");
+        }
+    }
+
+    @Override
+    public void run() {
+        {
+            try {
+                if (authentication()) {
+                    readMessages();
+                }
+            } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e) {
+                System.out.println("Client error...");
+            } finally {
+                closeConnection();
+            }
         }
     }
 
@@ -126,7 +129,6 @@ public class ClientHandler {
             inputStream.close();
             outputStream.close();
             socket.close();
-            executorService.shutdownNow();
         } catch (IOException e) {
             System.out.println("Error closing the connection...");
         }
