@@ -41,7 +41,7 @@ public class ClientHandler implements Runnable {
                     readMessages();
                 }
             } catch (IOException | InvalidKeySpecException | NoSuchAlgorithmException e) {
-                System.out.println("Client error...");
+                MyServer.LOGGER.error("Client error...");
             } finally {
                 closeConnection();
             }
@@ -116,21 +116,21 @@ public class ClientHandler implements Runnable {
         try {
             outputStream.writeUTF(msg);
         } catch (IOException e) {
-            System.out.println("Problem with OutputStream...");
+            MyServer.LOGGER.error("Problem with OutputStream...");
         }
     }
 
     private void closeConnection() {
         server.unsubscribe(this);
         server.broadcastMsg(name + " has left this chat.");
-        System.out.println(name + " has left this chat");
+        MyServer.LOGGER.info(name + " has left this chat");
 
         try {
             inputStream.close();
             outputStream.close();
             socket.close();
         } catch (IOException e) {
-            System.out.println("Error closing the connection...");
+            MyServer.LOGGER.error("Error closing the connection...");
         }
     }
 
@@ -183,7 +183,7 @@ public class ClientHandler implements Runnable {
             if (passHandler.validatePassword(parts[2], rs.getInt(2), rs.getString(3), rs.getString(4))) {
                 sendMessage("/auth ok " + parts[1]);
                 name = parts[1];
-                System.out.println(name + " entered to the chat.");
+                MyServer.LOGGER.info(name + " entered to the chat.");
                 server.subscribe(this);
                 return true;
             }

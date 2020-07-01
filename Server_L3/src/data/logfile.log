@@ -1,0 +1,84 @@
+INFO  2020-06-29 17:36:21 [main] MyServer (MyServer.java:21) - The Server was launched.
+Waiting for connection...
+INFO  2020-06-29 17:58:40 [main] MyServer (MyServer.java:21) - The Server was launched.
+Waiting for connection...
+INFO  2020-06-29 18:00:10 [main] MyServer (MyServer.java:23) - User is connected.
+INFO  2020-06-29 18:00:10 [main] MyServer (MyServer.java:21) - The Server was launched.
+Waiting for connection...
+INFO  2020-06-29 18:00:13 [pool-1-thread-1] ClientHandler (ClientHandler.java:186) - login1 entered to the chat.
+ERROR 2020-06-29 18:00:38 [pool-1-thread-1] ClientHandler (ClientHandler.java:44) - Client error...
+INFO  2020-06-29 18:00:38 [pool-1-thread-1] ClientHandler (ClientHandler.java:126) - login1 has left this chat
+INFO  2020-06-29 18:01:07 [main] MyServer (MyServer.java:23) - User is connected.
+INFO  2020-06-29 18:01:07 [main] MyServer (MyServer.java:21) - The Server was launched.
+Waiting for connection...
+INFO  2020-06-29 18:01:08 [pool-1-thread-1] ClientHandler (ClientHandler.java:126) -  has left this chat
+2020-06-30 13:59:22 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:01:56 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:13:58 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:13:58 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:14:35 [main] INFO  MyServer - User is connected.
+2020-06-30 14:14:35 [main] INFO  MyServer - Клиент подключился
+2020-06-30 14:14:35 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:14:35 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:14:37 [pool-1-thread-1] INFO  MyServer - login1 entered to the chat.
+2020-06-30 14:15:35 [main] INFO  MyServer - User is connected.
+2020-06-30 14:15:35 [main] INFO  MyServer - Клиент подключился
+2020-06-30 14:15:35 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:15:35 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:15:36 [pool-1-thread-2] INFO  MyServer - login2 entered to the chat.
+2020-06-30 14:15:56 [pool-1-thread-1] INFO  MyServer - Клиент прислал сообщение
+2020-06-30 14:16:21 [pool-1-thread-1] INFO  MyServer - Клиент прислал сообщение
+2020-06-30 14:42:39 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:42:39 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:42:57 [main] INFO  MyServer - User is connected.
+2020-06-30 14:42:57 [main] INFO  MyServer - Клиент подключился
+2020-06-30 14:42:57 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:42:57 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:42:58 [pool-1-thread-1] INFO  MyServer - /auth ok login2
+2020-06-30 14:42:58 [pool-1-thread-1] INFO  MyServer - login2 entered to the chat.
+2020-06-30 14:42:58 [pool-1-thread-1] INFO  MyServer - /logIn passed
+2020-06-30 14:43:05 [main] INFO  MyServer - User is connected.
+2020-06-30 14:43:05 [main] INFO  MyServer - Клиент подключился
+2020-06-30 14:43:05 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:43:05 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:43:06 [pool-1-thread-2] INFO  MyServer - /auth ok login1
+2020-06-30 14:43:06 [pool-1-thread-2] INFO  MyServer - login1 entered to the chat.
+2020-06-30 14:43:06 [pool-1-thread-2] INFO  MyServer - /logIn passed
+2020-06-30 14:43:19 [pool-1-thread-1] INFO  MyServer - /status login1 
+2020-06-30 14:43:27 [pool-1-thread-2] INFO  MyServer - /status login2 
+2020-06-30 14:43:36 [pool-1-thread-2] INFO  MyServer - /w login1 [%msg]gsg
+2020-06-30 14:43:36 [pool-1-thread-2] INFO  MyServer - Клиент прислал сообщение
+2020-06-30 14:43:39 [pool-1-thread-1] INFO  MyServer - /status login1 
+2020-06-30 14:43:45 [pool-1-thread-1] INFO  MyServer - /w login2 [%msg]sgsbg
+2020-06-30 14:43:45 [pool-1-thread-1] INFO  MyServer - Клиент прислал сообщение
+2020-06-30 14:43:47 [pool-1-thread-2] INFO  MyServer - /status login2 
+2020-06-30 14:43:59 [pool-1-thread-1] INFO  MyServer - /status login1 
+2020-06-30 14:44:07 [pool-1-thread-2] INFO  MyServer - /status login2 
+2020-06-30 14:44:19 [pool-1-thread-1] INFO  MyServer - /status login1 
+2020-06-30 14:44:27 [pool-1-thread-2] INFO  MyServer - /status login2 
+2020-06-30 14:44:39 [pool-1-thread-1] INFO  MyServer - /status login1 
+2020-06-30 14:44:47 [pool-1-thread-2] INFO  MyServer - /status login2 
+2020-06-30 14:44:59 [pool-1-thread-1] INFO  MyServer - /status login1 
+2020-06-30 14:45:04 [pool-1-thread-2] ERROR MyServer - Client error...
+2020-06-30 14:45:04 [pool-1-thread-2] INFO  MyServer - login1 has left this chat.
+2020-06-30 14:45:04 [pool-1-thread-2] INFO  MyServer - login1 has left this chat
+2020-06-30 14:45:19 [pool-1-thread-1] INFO  MyServer - /status 
+2020-06-30 14:49:41 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:49:41 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:50:53 [main] INFO  MyServer - User is connected.
+2020-06-30 14:50:53 [main] INFO  MyServer - Клиент подключился
+2020-06-30 14:50:53 [main] INFO  MyServer - The Server was launched.
+Waiting for connection...
+2020-06-30 14:50:53 [main] INFO  MyServer - Сервер запущен, ожидание соединения ...
+2020-06-30 14:50:55 [pool-1-thread-1] INFO  MyServer - login1 entered to the chat.
+2020-06-30 14:51:13 [pool-1-thread-1] ERROR MyServer - Client error...
+2020-06-30 14:51:13 [pool-1-thread-1] INFO  MyServer - login1 has left this chat
