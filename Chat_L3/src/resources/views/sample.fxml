@@ -1,32 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 
-<?import javafx.scene.control.TextField?>
-
-<?import javafx.scene.shape.Circle?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.SeparatorMenuItem?>
 <HBox fx:id="mainPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="856.0" stylesheets="@../styles/style.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ControllerChatView">
-      <VBox fx:id="contactsPane" maxWidth="256" minWidth="256" prefHeight="600.0" BorderPane.alignment="CENTER" >
+      <VBox fx:id="contactsPane" maxWidth="256" minWidth="256" prefHeight="600.0" BorderPane.alignment="CENTER">
           <children>
-              <BorderPane fx:id="userPanel" maxWidth="256" minWidth="256" prefHeight="64" >
+              <BorderPane fx:id="userPanel" maxWidth="256" minWidth="256" prefHeight="64">
                   <right>
                       <MenuBar fx:id="menuBar">
                           <menus>
-                              <Menu >
+                              <Menu>
                                   <items>
-                                      <MenuItem text="Settings"/>
-                                      <SeparatorMenuItem  />
-                                      <MenuItem text="Log OUT" fx:id="logOut" onAction="#logOutTopMenu"/>
+                                      <MenuItem text="Settings" />
+                                      <SeparatorMenuItem />
+                                      <MenuItem fx:id="logOut" onAction="#logOutTopMenu" text="Log OUT" />
                                   </items>
                               </Menu>
                           </menus>
@@ -36,7 +26,7 @@
                     <Insets bottom="5.0" left="8.0" right="8.0" top="8.0" />
                   </padding>
               </BorderPane>
-              <TextField fx:id="fieldSearch" styleClass="searchField" prefHeight="32" minHeight="32" maxHeight="32" minWidth="256" >
+              <TextField fx:id="fieldSearch" maxHeight="32" minHeight="32" minWidth="256" prefHeight="32" styleClass="searchField">
                   <opaqueInsets>
                       <Insets left="8.0" />
                   </opaqueInsets>
@@ -48,13 +38,11 @@
       </VBox>
       <VBox fx:id="chatField" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
          <children>
-             <HBox fx:id="chatTopPanel" prefWidth="600" minHeight="64" maxHeight="64" VBox.vgrow="ALWAYS">
-                 <children>
-                 </children>
+             <HBox fx:id="chatTopPanel" maxHeight="287.0" minHeight="64" prefHeight="287.0" prefWidth="600" VBox.vgrow="ALWAYS">
              </HBox>
-         <ScrollPane fx:id="chatScrollPane" prefHeight="488" prefWidth="600.0" fitToWidth="true">
+         <ScrollPane fx:id="chatScrollPane" fitToWidth="true" prefHeight="488" prefWidth="600.0">
            <content>
-               <VBox fx:id="mainChatPane" nodeOrientation="RIGHT_TO_LEFT" maxHeight="488.0" prefWidth="600.0" spacing="10.0">
+               <VBox fx:id="mainChatPane" maxHeight="488.0" nodeOrientation="RIGHT_TO_LEFT" prefWidth="600.0" spacing="10.0">
                   <children>
                   </children>
                   <opaqueInsets>
