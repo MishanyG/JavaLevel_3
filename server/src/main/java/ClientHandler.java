@@ -1,68 +1,91 @@
 import java.io.*;
+import java.net.ServerSocket;
 import java.net.Socket;
 
 public class ClientHandler implements Runnable {
 
-    private DataInputStream is;
-    private DataOutputStream os;
-    private InputStream fis;
-    private OutputStream fos;
+    private final DataInputStream is;
+    private final DataOutputStream os;
     private final IOServer server;
     private final Socket socket;
-    private final String name = "User";
-    private FileOutputStream wfile;
-    public ClientHandler (Socket socket, IOServer ioServer) throws IOException {
+    private static int counter = 0;
+    private final String name;
+    private static final String PATH = "server/Out/";
+
+    public ClientHandler(Socket socket, IOServer ioServer) throws IOException {
         server = ioServer;
         this.socket = socket;
-        is = new DataInputStream (socket.getInputStream ());
-        os = new DataOutputStream (socket.getOutputStream ());
+        counter++;
+        name = "user#" + counter;
+        is = new DataInputStream(socket.getInputStream());
+        os = new DataOutputStream(socket.getOutputStream());
+        System.out.println("Client handled: ip = " + socket.getInetAddress());
+        System.out.println("Nick:" + name);
     }
 
-    public void sendMessage (String message) throws IOException {
-        os.writeUTF (message);
-        os.flush ();
-    }
-
-    private void connection (String s) throws IOException{
-        File file = new File ("server/Out/" + s);
-        wfile = new FileOutputStream(file);
-        int readedBytesCount = 0;
-        byte[] buf = new byte[2 * 1024];
-        while (true) {
-            readedBytesCount = is.read (buf);
-            if (readedBytesCount == - 1) {
-                break;
-            }
-            if (readedBytesCount > 0) {
-                wfile.write (buf, 0, readedBytesCount);
-            }
-            wfile.flush ();
-            wfile.close ();
-            break;
-        }
+    public void sendMessage(String message) throws IOException {
+        os.writeUTF(message);
+        os.flush();
     }
 
     public void run() {
         while (true) {
             try {
-                String message = is.readUTF ();
-                System.out.println ("message from " + name + ": " + message);
-                server.broadCastMessage (message);
-                String[] s = message.split ("sendFiles#", 2);
-                if (s.length > 1)
-                    if (s[0].equals (""))
-                        connection (String.valueOf (s[1]));
-                if (message.equals ("quit")) {
-                    server.kick (this);
-                    os.close ();
-                    is.close ();
-                    socket.close ();
-                    System.out.println ("client " + name + " disconnected");
+                String message = is.readUTF();
+                if (message.equals("quit")) {
+                    os.writeUTF("disconnected");
+                    Thread.sleep(1000);
+                    os.close();
+                    is.close();
+                    socket.close();
+                    System.out.println("client " + name + " disconnected");
                     break;
                 }
-            } catch (IOException e) {
-                e.printStackTrace ();
+                if (message.equals("./upload")) {
+                    String fileName = is.readUTF();
+                    long fileLength = is.readLong();
+                    File file = new File(PATH + fileName);
+                    file.createNewFile();
+                    try (FileOutputStream fos = new FileOutputStream(file)) {
+                        byte[] buffer = new byte[256];
+                        if (fileLength < 256) {
+                            fileLength += 256;
+                        }
+                        int read = 0;
+                        for (int i = 0; i < fileLength / 256; i++) {
+                            read = is.read(buffer);
+                            fos.write(buffer, 0, read);
+                        }
+                        os.writeUTF("OK");
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    String fileName = is.readUTF();
+                    if (message.equals ("mess")) {
+                        os.writeUTF (fileName);
+                        System.out.println ("message from " + name + ": " + fileName);
+                    } else {
+                        File file = new File (PATH + fileName);
+                        if (file.exists ()) {
+                            os.writeUTF ("OK");
+                        } else {
+                            os.writeUTF ("WRONG");
+                        }
+                        try (FileInputStream fis = new FileInputStream (file)) {
+                            os.writeLong (file.length ());
+                            byte[] buffer = new byte[256];
+                            int read;
+                            while ((read = fis.read (buffer)) != - 1) {
+                                os.write (buffer, 0, read);
+                            }
+                            os.flush ();
+                        }
+                    }
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
-}
