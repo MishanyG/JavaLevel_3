@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,8 +28,14 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
+import static sample.ServerListener.ServerListener.socket;
+
 public class ControllerChatView implements Initializable {
 
+    @FXML private Button sendFile;
+    @FXML private TextField text;
+    @FXML private Button sendButton;
+    @FXML private ListView <String> listFiles;
     @FXML private VBox chatField;
     @FXML private VBox contactsPane;
     @FXML private VBox mainChatPane;
@@ -45,6 +52,7 @@ public class ControllerChatView implements Initializable {
     private String userName;
     private PreparedStatement ps;
     private static boolean acitveSessionFlag = true;
+    private static final String PATH = "Chat_L3/In/";
     Separator separator;
 
     private List<String> comands = Arrays.asList("/status", "/w");
@@ -91,6 +99,16 @@ public class ControllerChatView implements Initializable {
         ImagePattern pattern = new ImagePattern(new Image(ownerUser.getImage()));
         circle.setFill(pattern);
         userPanel.setLeft(circle);
+        text.setOnAction(this::sendMessage);
+        File dir = new File(PATH);
+        for (File file : Objects.requireNonNull (dir.listFiles ())) {
+            listFiles.getItems().add(file.getName());
+        }
+        listFiles.getSelectionModel().selectedItemProperty().addListener(
+                (observable, oldValue, newValue) -> {
+                    text.clear ();
+                    text.setText ("./upload " + newValue);
+                });
     }
 
     private void sendUserMessage() {
@@ -102,7 +120,7 @@ public class ControllerChatView implements Initializable {
             currentActivContact.getMessageBubbles().add(new MessageBubble(message, SpeechDirection.RIGHT));
             userMessageField.setText("");
             userMessage = "/w " + currentActivContact.getName() + " [%msg]" + message.getMessage();
-            if (ServerListener.socket == null || ServerListener.socket.isClosed()) {
+            if (socket == null || socket.isClosed()) {
                unsents.add(userMessage);
             } else {
               ServerListener.sendMsg(userMessage);
@@ -409,4 +427,9 @@ public class ControllerChatView implements Initializable {
         return historyList;
     }
 
+    public void sendMessage (ActionEvent actionEvent) {
+        if (ServerListener.sendFile(text.getText())) {
+            text.setText ("File uploaded!");
+        }
+    }
 }
