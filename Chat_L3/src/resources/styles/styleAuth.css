@@ -10,7 +10,7 @@
     -fx-background-repeat: no-repeat;
     -fx-background-position: left center;
     -fx-background-size: 20px 20px;
-    -fx-font-size: 12
+    -fx-font-size: 12;
     -fx-padding: 5px 8px 5px 8px;
     -fx-background-position: left 10 center;
 
@@ -45,7 +45,7 @@
     -fx-background-color: #fcdb14;
     -fx-font: bold 16px 'Calibri';
 }
-#loginButton: pressed {
+#loginButton:pressed {
     -fx-background-color: #f2f2f2;
 }
 #singupButton {
@@ -53,7 +53,7 @@
     -fx-pref-height: 24px;
     -fx-background-color: transparent;
 }
-#singupButton: pressed {
+#singupButton:pressed {
     -fx-text-fill: #f2f2f2;
 }
 #login {

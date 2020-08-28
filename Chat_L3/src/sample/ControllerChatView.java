@@ -382,7 +382,7 @@ public class ControllerChatView implements Initializable {
                 ps.executeUpdate();
                 conn.commit();
             }
-            fileOutStream = new FileOutputStream("src/data/history/" + fileName);
+            fileOutStream = new FileOutputStream("Chat_L3/src/data/history/" + fileName);
             objOutStream = new ObjectOutputStream(fileOutStream);
             objOutStream.writeObject(new ArrayList<Node>(tab.getMessageBubbles()));
             objOutStream.flush();

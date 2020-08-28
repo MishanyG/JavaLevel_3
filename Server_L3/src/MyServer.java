@@ -1,3 +1,6 @@
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -8,19 +11,23 @@ public class MyServer {
 
     private List<ClientHandler> clients;
     private Map<String, ClientHandler> unsents = new HashMap<>();
+    static final Logger LOGGER = LogManager.getLogger();
 
     public MyServer() {
         try (ServerSocket serverSocket = new ServerSocket(PORT)) {
             clients = new ArrayList<>();
 
             while (true) {
-                System.out.println("The Server was launched.\nWaiting for connection...");
+                LOGGER.info("The Server was launched.\nWaiting for connection...");
+                LOGGER.info("Сервер запущен, ожидание соединения ...");
                 Socket socket = serverSocket.accept();
-                System.out.println("User is connected.");
+                LOGGER.info("User is connected.");
+                LOGGER.info("Клиент подключился");
                 new ClientHandler(this, socket);
             }
         } catch (IOException e) {
-            System.out.println("Server error...");
+            LOGGER.error("Server error...");
+            LOGGER.error("Произошла ошибка: ошибка сервера ...");
         } finally {
         }
     }
@@ -38,6 +45,7 @@ public class MyServer {
         for (ClientHandler client : clients) {
             if (client.getName().equals(data.get(1))) {
                 client.sendMessage("/w " + owner.getName() + " [%msg]" + message.get(1));
+                LOGGER.info("Клиент прислал сообщение");
                 return true;
             }
         }
