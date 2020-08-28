@@ -1,6 +1,4 @@
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -15,9 +13,10 @@ public class ClientHandler implements Runnable {
     private final DataOutputStream outputStream;
     private Connection conn;
     private PassHandler passHandler;
+    private static final String PATH = "Server_L3/src/data/";
 
     private String name;
-    private final List<String> comands = Arrays.asList("/getStatus", "/w");
+    private final List<String> comands = Arrays.asList("/getStatus", "/w", "./upload");
 
     public ClientHandler(MyServer server, Socket socket) {
         try {
@@ -84,21 +83,45 @@ public class ClientHandler implements Runnable {
 
     public synchronized void readMessages() throws IOException {
         while (true) {
-            String msgFromClient = inputStream.readUTF();
+            String msgFromClient = inputStream.readUTF ();
             for (String comand : comands) {
-                if (msgFromClient.startsWith(comand)) {
+                if (msgFromClient.startsWith (comand)) {
                     switch (comand) {
                         case "/getStatus":
-                            checkStatusContacts(msgFromClient);
+                            checkStatusContacts (msgFromClient);
                             break;
                         case "/w":
-                            server.chooseClientForMessage(msgFromClient, this);
+                            server.chooseClientForMessage (msgFromClient, this);
+                            break;
+                        case "./upload":
+                            sendFile ();
                             break;
                     }
                 }
             }
         }
+    }
 
+    private void sendFile () {
+        try {
+            String fileName = inputStream.readUTF ();
+            long fileLength = inputStream.readLong ();
+            File file = new File (PATH + fileName);
+            file.createNewFile ();
+            try (FileOutputStream fos = new FileOutputStream (file)) {
+                byte[] buffer = new byte[256];
+                if (fileLength < 256) {
+                    fileLength += 256;
+                }
+                int read = 0;
+                for (int i = 0; i < fileLength / 256; i++) {
+                    read = inputStream.read (buffer);
+                    fos.write (buffer, 0, read);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void checkStatusContacts(String msg) {

@@ -39,6 +39,9 @@
       <VBox fx:id="chatField" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
          <children>
              <HBox fx:id="chatTopPanel" maxHeight="287.0" minHeight="64" prefHeight="287.0" prefWidth="600" VBox.vgrow="ALWAYS">
+                 <ListView fx:id="listFiles" prefHeight="176.0" prefWidth="262.0" />
+                 <TextField fx:id="text" />
+                 <Button fx:id="sendFile" layoutX="308.0" layoutY="483.0" mnemonicParsing="false" onAction="#sendMessage" prefHeight="32.0" prefWidth="133.0" text="SEND FILE" />
              </HBox>
          <ScrollPane fx:id="chatScrollPane" fitToWidth="true" prefHeight="488" prefWidth="600.0">
            <content>

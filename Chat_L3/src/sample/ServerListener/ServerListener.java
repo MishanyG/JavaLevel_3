@@ -3,9 +3,7 @@ package sample.ServerListener;
 import sample.ControllerAuthorization;
 import sample.ControllerChatView;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.rmi.UnknownHostException;
 import java.util.ArrayList;
@@ -22,6 +20,7 @@ public class ServerListener {
     private static ControllerAuthorization controllerAu;
     private static String userName;
     private static boolean activeSessionFlag = true;
+    private static final String PATH = "Chat_L3/In/";
 
     public ServerListener(String authString, ControllerAuthorization controllerAu) {
         this.authString = authString;
@@ -92,11 +91,11 @@ public class ServerListener {
                     }
                     return false;
                 } else {
-                    outputStream.writeUTF(msg);
+                    outputStream.writeUTF (msg);
                     return true;
                 }
             } catch (IOException e) {
-                System.out.println("Outputstream not found.");
+                System.out.println("OutputStream not found.");
                 return false;
             }
     }
@@ -142,4 +141,25 @@ public class ServerListener {
     public static void setSessionFlag(Boolean flag) {
         activeSessionFlag = flag;
     }
+
+    public static boolean sendFile (String text) {
+            String[] tokens = text.split (" ");
+            String command = tokens[0];
+            String fileName = tokens[1];
+            File file = new File (PATH + fileName);
+            try (FileInputStream fis = new FileInputStream (file)) {
+                outputStream.writeUTF (command);
+                outputStream.writeUTF (fileName);
+                outputStream.writeLong (file.length ());
+                byte[] buffer = new byte[256];
+                int read = 0;
+                while ((read = fis.read (buffer)) != - 1) {
+                    outputStream.write (buffer, 0, read);
+                }
+                outputStream.flush ();
+            } catch (Exception e) {
+                e.printStackTrace ();
+            }
+            return true;
+        }
 }
